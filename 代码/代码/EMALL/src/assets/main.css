@@ -1,0 +1,28 @@
+@import './base.css';
+
+#app {
+  max-width: 100%;
+
+
+  font-weight: normal;
+}
+
+a,
+.green {
+  text-decoration: none;
+  color: rgb(0, 0, 0);
+  transition: 0.4s;
+  padding: 3px;
+}
+
+
+
+@media (min-width: 1024px) {
+ 
+
+  #app {
+  
+    grid-template-columns: 1fr 1fr;
+    
+  }
+}
