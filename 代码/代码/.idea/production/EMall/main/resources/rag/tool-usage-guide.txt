@@ -1,0 +1,278 @@
+**工具函数使用指南**
+
+本指南提供了Mall Agent系统中所有可用工具函数的使用说明，帮助用户了解如何正确调用这些工具函数来执行各种业务操作。
+
+## 1. 产品相关工具函数
+
+### 1.1 getProductById - 根据产品ID获取产品信息
+**功能说明**：通过产品ID查询产品的详细信息
+**参数要求**：需要提供产品ID（productId）作为参数，类型为Integer，必填
+**调用示例**：当用户想查询某个产品的信息时，可以调用此函数
+**常见问题**：如果产品ID无效或不存在，将返回null
+**返回值**：返回包含产品ID、名称、价格、库存、创建时间和更新时间的响应对象
+**注意事项**：
+- 产品的价格和库存字段在当前实现中返回默认值（价格为0，库存为0）
+- 创建时间和更新时间目前都使用产品的发布日期
+
+### 1.2 getProductCategoryById - 根据产品分类ID获取产品分类信息
+**功能说明**：通过分类ID查询产品分类的详细信息
+**参数要求**：需要提供分类ID（categoryId）作为参数，类型为Integer，必填
+**调用示例**：当用户想了解某个产品分类的信息时，可以调用此函数
+**参数验证**：如果分类ID为null或小于等于0，将返回null
+**异常处理**：如果查询过程中发生异常，将返回null并记录错误日志
+**返回值**：返回产品分类对象
+
+### 1.3 getProductConfigurationById - 根据配置ID获取产品配置信息
+**功能说明**：通过配置ID查询产品配置的详细信息
+**参数要求**：需要提供配置ID（configurationId）作为参数，类型为Integer，必填
+**调用示例**：当用户想了解某个产品配置的具体内容时，可以调用此函数
+**参数验证**：如果配置ID为null或小于等于0，将返回null
+**异常处理**：如果查询过程中发生异常，将返回null并记录错误日志
+**返回值**：返回产品配置对象
+
+### 1.4 getProductParameterById - 根据参数ID获取产品参数信息
+**功能说明**：通过参数ID查询产品参数的详细信息
+**参数要求**：需要提供参数ID（parameterId）作为参数，类型为Integer，必填
+**调用示例**：当用户想了解某个产品参数的具体内容时，可以调用此函数
+**参数验证**：如果参数ID为null或小于等于0，将返回null
+**异常处理**：如果查询过程中发生异常，将返回null并记录错误日志
+**返回值**：返回产品参数对象
+
+### 1.5 getConfigurationByProductId - 根据产品ID获取配置信息
+**功能说明**：通过产品ID查询该产品的所有配置信息
+**参数要求**：需要提供产品ID（productId）作为参数，类型为Integer，必填
+**调用示例**：当用户想了解某个产品有哪些配置选项时，可以调用此函数
+**参数验证**：如果产品ID为null或小于等于0，将返回包含null的响应对象
+**返回值**：返回包含产品配置列表的响应对象
+
+### 1.6 getParameterByProductId - 根据产品ID获取参数信息
+**功能说明**：通过产品ID查询该产品的参数信息
+**参数要求**：需要提供产品ID（productId）作为参数，类型为Integer，必填
+**调用示例**：当用户想了解某个产品的详细参数规格时，可以调用此函数
+**参数验证**：如果产品ID为null或小于等于0，将返回包含null的响应对象
+**异常处理**：如果查询过程中发生异常，将返回包含null的响应对象并记录错误日志
+**返回值**：返回包含产品参数对象的响应对象
+
+## 2. 订单相关工具函数
+
+### 2.1 getOrderById - 根据订单ID获取订单信息
+**功能说明**：通过订单ID查询订单的详细信息
+**参数要求**：需要提供订单ID（orderId）作为参数，类型为Integer，必填
+**调用示例**：当用户想查询自己的订单状态时，可以调用此函数
+**返回值**：返回订单对象
+
+### 2.2 createOrder - 创建新订单
+**功能说明**：创建一个新的订单
+**参数要求**：需要提供以下参数：
+- userId：用户ID，类型为Integer，必填
+- productId：产品ID，类型为Integer，必填
+- quantity：购买数量，类型为Integer，必填
+- totalAmount：总金额，类型为Double，必填
+**调用示例**：当用户想购买商品并创建订单时，可以调用此函数
+**注意事项**：创建订单前需要确保用户已登录且商品库存充足
+**返回值**：返回创建的订单对象
+
+### 2.3 updateOrder - 更新订单
+**功能说明**：更新现有订单的信息
+**参数要求**：需要提供以下参数：
+- orderId：订单ID，类型为Integer，必填
+- status：订单状态，类型为String，必填
+**调用示例**：当用户想修改订单状态或其他信息时，可以调用此函数
+**返回值**：返回包含更新是否成功的布尔值响应对象
+
+### 2.4 updateOrderWithUserValidation - 带用户验证的订单更新
+**功能说明**：更新现有订单的信息，并验证用户是否有权限操作该订单
+**参数要求**：需要提供以下参数：
+- orderId：订单ID，类型为Integer，必填
+- status：订单状态，类型为String，必填
+- userId：用户ID，类型为Integer，必填
+**调用示例**：当用户想更新自己的订单状态时，可以调用此函数
+**参数验证**：如果任何参数为null或状态为空字符串，将返回更新失败的响应对象
+**返回结果**：包含更新是否成功的标志和相关消息的响应对象
+**消息说明**：
+- 更新成功：返回"更新成功"
+- 更新失败：返回"更新失败（订单不存在或用户无权操作）"
+
+### 2.5 deleteOrderWithUserValidation - 带用户验证的订单删除
+**功能说明**：删除现有订单，并验证用户是否有权限操作该订单
+**参数要求**：需要提供以下参数：
+- orderId：订单ID，类型为Integer，必填
+- userId：用户ID，类型为Integer，必填
+**调用示例**：当用户想取消自己的订单时，可以调用此函数
+**参数验证**：如果任何参数为null，将返回删除失败的响应对象
+**返回结果**：包含删除是否成功的标志和相关消息的响应对象
+**消息说明**：
+- 删除成功：返回"删除成功"
+- 删除失败：返回"删除失败（订单不存在或用户无权操作）"
+
+### 2.6 getOrdersByUserId - 根据用户ID获取订单列表
+**功能说明**：查询特定用户的所有订单
+**参数要求**：需要提供用户ID（userId）作为参数，类型为Integer，必填
+**调用示例**：当用户想查看自己的所有订单时，可以调用此函数
+**参数验证**：如果用户ID为null，将返回包含null的响应对象
+**返回值**：返回包含订单列表的响应对象
+
+## 3. 用户相关工具函数
+
+### 3.1 getUserById - 根据用户ID获取用户信息
+**功能说明**：通过用户ID查询用户的详细信息
+**参数要求**：需要提供用户ID（userId）作为参数，类型为Integer，必填
+**调用示例**：当用户想查询自己的账户信息时，可以调用此函数
+**内部处理**：系统会自动将Integer类型的userId转换为Long类型进行查询
+**返回值**：返回用户对象
+
+### 3.2 getUserByUsername - 根据用户名获取用户信息
+**功能说明**：通过用户名查询用户的详细信息
+**参数要求**：需要提供用户名（username）作为参数，类型为String，必填
+**调用示例**：当用户想通过用户名查找用户时，可以调用此函数
+**参数验证**：如果用户名为null或空字符串，将返回包含null的响应对象
+**返回值**：返回用户对象
+
+### 3.3 createUser - 创建新用户
+**功能说明**：创建一个新的用户账户
+**参数要求**：需要提供用户对象（user）作为参数，包含用户的完整信息
+**调用示例**：当新用户注册时，可以调用此函数
+**注意事项**：创建用户前需要验证用户名是否已存在
+**返回值**：返回包含创建是否成功的布尔值响应对象
+
+### 3.4 updateUserByIdOrUsername - 根据用户ID或用户名更新用户信息
+**功能说明**：根据用户ID或用户名更新用户的详细信息
+**参数要求**：需要提供以下参数：
+- userId：用户ID，类型为Long，可选（与username至少提供一个）
+- username：用户名，类型为String，可选（与userId至少提供一个）
+- user：包含要更新的用户信息的用户对象，必填
+**调用示例**：当用户想修改自己的个人资料时，可以调用此函数
+**参数验证**：
+- 如果用户对象为null，返回更新失败和"用户数据不能为空"消息
+- 如果userId和username同时为null或username为空字符串，返回更新失败和"用户ID和用户名不能同时为空"消息
+- 如果根据提供的ID或用户名找不到用户，返回更新失败和"用户不存在"消息
+**返回值**：包含更新是否成功的标志和相关消息的响应对象
+**消息说明**：
+- 更新成功：返回"更新成功"
+- 更新失败：返回相应的失败原因
+
+### 3.5 deleteUserByIdOrUsername - 根据用户ID或用户名删除用户
+**功能说明**：根据用户ID或用户名删除用户账户
+**参数要求**：需要提供以下参数：
+- userId：用户ID，类型为Long，可选（与username至少提供一个）
+- username：用户名，类型为String，可选（与userId至少提供一个）
+**调用示例**：当需要删除用户账户时，可以调用此函数
+**参数验证**：
+- 如果userId和username同时为null或username为空字符串，返回删除失败和"用户ID和用户名不能同时为空"消息
+- 如果根据提供的用户名找不到用户，返回删除失败和"用户不存在"消息
+**返回值**：包含删除是否成功的标志和相关消息的响应对象
+**消息说明**：
+- 删除成功：返回"删除成功"
+- 删除失败：返回相应的失败原因
+
+## 4. 账户与品牌相关工具函数
+
+### 4.1 getAccountById - 根据账户ID获取账户信息
+**功能说明**：通过账户ID查询账户的详细信息
+**参数要求**：需要提供账户ID（accountId）作为参数，类型为String，必填
+**调用示例**：当用户想查询自己的账户余额或状态时，可以调用此函数
+**返回值**：返回账户对象
+
+### 4.2 getBrandById - 根据品牌ID获取品牌信息
+**功能说明**：通过品牌ID查询品牌的详细信息
+**参数要求**：需要提供品牌ID（brandId）作为参数，类型为Integer，必填
+**调用示例**：当用户想了解某个品牌的信息时，可以调用此函数
+**返回值**：返回品牌对象
+
+## 5. 工具函数使用注意事项
+
+1. **参数验证**：大多数工具函数都有参数验证机制，确保输入的参数有效
+2. **错误处理**：当操作失败时，工具函数通常会返回错误消息或状态标志
+3. **日志记录**：工具函数的调用和响应通常会被记录在系统日志中
+4. **权限控制**：部分工具函数（如更新和删除操作）需要进行用户权限验证
+5. **返回格式**：工具函数的返回值通常是特定格式的响应对象，包含操作结果和相关数据
+6. **异常处理**：许多工具函数都包含异常处理机制，在遇到错误时会记录日志并返回适当的响应
+
+## 6. 常见问题解答
+
+### 6.1 如何增加订单？
+要增加订单，可以使用createOrder工具函数。此函数需要提供完整的订单信息，包括产品、数量和用户信息等。在调用前，请确保用户已登录且商品库存充足。
+
+**调用示例**：
+```
+createOrderRequest request = new createOrderRequest(1, 1001, 2, 299.98);
+createOrderResponse response = createOrder().apply(request);
+```
+
+### 6.2 如何查询我的订单？
+要查询特定用户的订单，可以使用getOrdersByUserId工具函数，提供用户ID作为参数。如果只查询单个订单的详细信息，可以使用getOrderById工具函数，提供订单ID作为参数。
+
+**调用示例**：
+```
+// 查询用户所有订单
+getOrdersByUserIdRequest request1 = new getOrdersByUserIdRequest(1);
+getOrdersByUserIdResponse response1 = getOrdersByUserId().apply(request1);
+
+// 查询单个订单详情
+getOrderByIdRequest request2 = new getOrderByIdRequest(101);
+getOrderByIdResponse response2 = getOrderById().apply(request2);
+```
+
+### 6.3 如何更新订单状态？
+要更新订单状态，建议使用updateOrderWithUserValidation工具函数，该函数会验证用户是否有权限操作该订单。需要提供订单ID、新的状态和用户ID作为参数。
+
+**调用示例**：
+```
+updateOrderWithUserValidationRequest request = new updateOrderWithUserValidationRequest(101, "已发货", 1);
+updateOrderWithUserValidationResponse response = updateOrderWithUserValidation().apply(request);
+```
+
+### 6.4 如何查询产品的详细信息？
+要查询产品的详细信息，可以使用getProductById工具函数，提供产品ID作为参数。如果想了解产品的配置和参数信息，可以分别使用getConfigurationByProductId和getParameterByProductId工具函数。
+
+**调用示例**：
+```
+// 查询产品基本信息
+getProductByIdRequest request1 = new getProductByIdRequest(1001);
+getProductByIdResponse response1 = getProductById().apply(request1);
+
+// 查询产品配置信息
+getConfigurationByProductIdRequest request2 = new getConfigurationByProductIdRequest(1001);
+getConfigurationByProductIdResponse response2 = getConfigurationByProductId().apply(request2);
+
+// 查询产品参数信息
+getParameterByProductIdRequest request3 = new getParameterByProductIdRequest(1001);
+getParameterByProductIdResponse response3 = getParameterByProductId().apply(request3);
+```
+
+### 6.5 如何根据用户名查询用户信息？
+要根据用户名查询用户信息，可以使用getUserByUsername工具函数，提供用户名字符串作为参数。
+
+**调用示例**：
+```
+getUserByUsernameRequest request = new getUserByUsernameRequest("john_doe");
+getUserByUsernameResponse response = getUserByUsername().apply(request);
+```
+
+### 6.6 如何更新用户信息？
+要更新用户信息，可以使用updateUserByIdOrUsername工具函数，提供用户ID或用户名以及要更新的用户信息。
+
+**调用示例**：
+```
+// 准备要更新的用户信息
+User updatedUser = new User();
+updatedUser.setUsername("john_doe_new");
+updatedUser.setEmail("john_new@example.com");
+
+// 通过用户ID更新
+updateUserByIdOrUsernameRequest request = new updateUserByIdOrUsernameRequest(1L, null, updatedUser);
+updateUserByIdOrUsernameResponse response = updateUserByIdOrUsername().apply(request);
+
+// 或通过用户名更新
+updateUserByIdOrUsernameRequest request2 = new updateUserByIdOrUsernameRequest(null, "john_doe", updatedUser);
+updateUserByIdOrUsernameResponse response2 = updateUserByIdOrUsername().apply(request2);
+```
+
+### 6.7 如何获取工具使用说明？
+系统提供了getToolUsage工具函数，可以根据用户的查询获取相关工具函数的使用说明。该函数会执行相似性搜索，返回相关的文档信息。
+
+**调用示例**：
+```
+GetToolUsageRequest request = new GetToolUsageRequest("如何创建订单");
+GetToolUsageResponse response = getToolUsage().apply(request);
+```

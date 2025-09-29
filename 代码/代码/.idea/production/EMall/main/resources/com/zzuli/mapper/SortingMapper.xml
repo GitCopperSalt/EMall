@@ -1,0 +1,11 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="main.com.zzuli.mapper.SortingMapper">
+
+    <select id="getTopProducts" resultType="main.com.zzuli.dto.Sorting">
+        SELECT p.product_id, p.product_name, ps.score
+        FROM products p
+                 JOIN product_scores ps ON p.product_id = ps.product_id
+        ORDER BY ps.score DESC
+    </select>
+
+</mapper>

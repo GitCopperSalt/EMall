@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="main.com.zzuli.mapper.ProductMapper">
+
+    <!-- 需要为每个字段配置结果映射（这里假设配置了自动驼峰转换） -->
+    <resultMap id="productResultMap" type="main.com.zzuli.entity.Product">
+        <!-- 根据实际字段映射关系配置 -->
+    </resultMap>
+
+    <!-- 获取所有产品信息 -->
+    <select id="getAllProducts" resultMap="productResultMap">
+        SELECT p.product_id, p.product_name,  p.product_color,
+               p.product_image, p.feature, p.release_date, pc.category_name, b.brand_name,
+               c.configuration_memory, c.configuration_price, pp.parameter_fuselage_size,
+               pp.parameter_weight, pp.parameter_memory_card, pp.parameter_screen_size,
+               pp.parameter_screen_refresh, pp.parameter_screen_resolution, pp.parameter_battery_capacity,
+               pp.parameter_CPU_model, pp.parameter_run_memory
+        FROM products p
+                 JOIN product_configurations c ON p.product_id = c.product_id
+                 JOIN product_parameters pp ON p.product_id = pp.product_id
+                 JOIN brands b ON p.brand_id = b.brand_id
+                 JOIN product_categories pc ON p.category_id = pc.category_id
+    </select>
+
+    <!-- 根据产品ID获取产品信息 -->
+    <select id="getProductById" resultMap="productResultMap">
+        SELECT p.product_id, p.product_name, p.product_model, p.product_network_model, p.product_color,
+        p.product_image, p.feature, p.release_date, pc.category_name, b.brand_name,
+        c.configuration_memory, c.configuration_price, pp.parameter_fuselage_size,
+        pp.parameter_weight, pp.parameter_memory_card, pp.parameter_screen_size,
+        pp.parameter_screen_refresh, pp.parameter_screen_resolution, pp.parameter_battery_capacity,
+        pp.parameter_CPU_model, pp.parameter_run_memory
+        FROM products p
+        JOIN product_configurations c ON p.product_id = c.product_id
+        JOIN product_parameters pp ON p.product_id = pp.product_id
+        JOIN brands b ON p.brand_id = b.brand_id
+        JOIN product_categories pc ON p.category_id = pc.category_id
+        WHERE p.product_id = #{productId}
+    </select>
+
+    <!-- 根据名称模糊查询 -->
+    <select id="getProductByName" resultMap="productResultMap">
+        SELECT p.product_id, p.product_name, p.product_model, p.product_network_model, p.product_color,
+               p.product_image, p.feature, p.release_date, pc.category_name, b.brand_name,
+               c.configuration_memory, c.configuration_price
+        FROM products p
+                 JOIN product_configurations c ON p.product_id = c.product_id
+                 JOIN brands b ON p.brand_id = b.brand_id
+                 JOIN product_categories pc ON p.category_id = pc.category_id
+        WHERE p.product_name LIKE CONCAT('%', #{productName}, '%')
+    </select>
+
+    <!-- 根据ID列表查询 -->
+    <select id="getProductsByIds" resultMap="productResultMap">
+        SELECT p.product_id, p.product_name, p.product_model, p.product_network_model, p.product_color,
+        p.product_image, p.feature, p.release_date, pc.category_name, b.brand_name,
+        c.configuration_memory, c.configuration_price
+        FROM products p
+        JOIN product_configurations c ON p.product_id = c.product_id
+        JOIN brands b ON p.brand_id = b.brand_id
+        JOIN product_categories pc ON p.category_id = pc.category_id
+        WHERE p.product_id IN
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <!-- 插入操作 -->
+    <insert id="addProduct" parameterType="main.com.zzuli.entity.Product">
+        INSERT INTO products (product_name, product_model, product_network_model, product_color,
+                              product_image, release_date, category_id, brand_id, configuration_id, parameter_id)
+        VALUES (#{product.productName}, #{product.productModel}, #{product.productNetworkModel},
+                #{product.productColor}, #{product.productImage}, #{product.releaseDate},
+                #{product.categoryId}, #{product.brandId}, #{product.configurationId}, #{product.parameterId})
+    </insert>
+
+    <!-- 更新操作 -->
+    <update id="updateProduct" parameterType="main.com.zzuli.entity.Product">
+        UPDATE products SET
+                            product_name = #{product.productName},
+                            product_model = #{product.productModel},
+                            product_network_model = #{product.productNetworkModel},
+                            product_color = #{product.productColor},
+                            product_image = #{product.productImage},
+                            release_date = #{product.releaseDate},
+                            category_id = #{product.categoryId},
+                            brand_id = #{product.brandId},
+                            configuration_id = #{product.configurationId},
+                            parameter_id = #{product.parameterId}
+        WHERE product_id = #{product.productId}
+    </update>
+
+    <!-- 删除操作 -->
+    <delete id="deleteProductById">
+        DELETE FROM products WHERE product_id = #{productId}
+    </delete>
+
+    <delete id="deleteProductsByIds">
+        DELETE FROM products WHERE product_id IN
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

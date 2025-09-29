@@ -1,0 +1,18 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="main.com.zzuli.mapper.AccountMapper">
+    <!-- 根据账户ID查询姓名，余额和卡号 -->
+    <select id="getTopProducts" resultType="main.com.zzuli.entity.Account">
+        SELECT accountId, name, balance, cardNumber
+        FROM bank.accounts
+        where accountId = #{accountId}
+    </select>
+    <!-- 验证账户（这里不直接返回Account对象，而是返回一个布尔值） -->
+    <!-- 使用exists检查，如果存在则返回true，否则返回false -->
+    <select id="validateAccount" resultType="boolean">
+        SELECT EXISTS(
+                       SELECT 1
+                       FROM bank.accounts
+                       WHERE accountId = #{accountId}
+                   )
+    </select>
+</mapper>

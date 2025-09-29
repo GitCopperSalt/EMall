@@ -1,0 +1,54 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="main.com.zzuli.mapper.MyOrderMapper">
+    <!-- 根据单号查询订单信息-->
+    <select id="selectByOrderNumber" resultType="main.com.zzuli.entity.MyOrder">
+        SELECT *
+        FROM emall.orders
+        where orderNumber = #{orderNumber}
+    </select>
+    <!-- 验证订单号（这里不直接返回MyOrder对象，而是返回一个布尔值） -->
+    <!-- 使用exists检查，如果存在则返回true，否则返回false -->
+    <select id="validateOrderNumber" resultType="boolean">
+        SELECT EXISTS(
+                       SELECT 1
+                       FROM emall.orders
+                       WHERE orderNumber = #{orderNumber}
+                   )
+    </select>
+    <!-- 根据单号查询订单信息-->
+    <select id="findOrdersByUsername" resultType="main.com.zzuli.entity.MyOrder">
+        SELECT *
+        FROM emall.orders
+        where username = #{username}
+    </select>
+    <!-- 验证订单号（这里不直接返回MyOrder对象，而是返回一个布尔值） -->
+    <!-- 使用exists检查，如果存在则返回true，否则返回false -->
+    <select id="validateUserNumber" resultType="boolean">
+        SELECT EXISTS(
+                       SELECT 1
+                       FROM emall.orders
+                       WHERE username = #{username}
+                   )
+    </select>
+    <update id="updateOrderByOrderNumber" parameterType="main.com.zzuli.entity.MyOrder">
+        UPDATE emall.orders
+        <set>
+            <if test="payment != null">payment = #{payment},</if>
+            <if test="paymentMethod != null">paymentMethod = #{paymentMethod},</if>
+        <if test="status != null">status = #{status},</if>
+            <if test="productName != null">productName = #{productName},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="quantity != null">quantity = #{quantity},</if>
+            <if test="image != null">image = #{image},</if>
+            <if test="hasRated != null">hasRated = #{hasRated},</if>
+            <if test="reviewContent != null">reviewContent = #{reviewContent},</if>
+            <if test="username != null">username = #{username},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="afterSales != null">afterSales = #{afterSales},</if>
+            <if test="name != null">name = #{name},</if>
+        </set>
+        WHERE orderNumber = #{orderNumber}
+    </update>
+
+</mapper>

@@ -1,0 +1,19 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="main.com.zzuli.mapper.InternalLoginMapper">
+    <!-- 根据用户名和密码查询管理员 -->
+    <select id="findAdminByUsernameAndPassword" resultType="main.com.zzuli.entity.InternalLogin">
+        SELECT *
+        FROM bank.admin
+        WHERE username = #{username}
+          AND password = #{password}
+    </select>
+    <!-- 验证管理员凭据（这里不直接返回Admin对象，而是返回一个布尔值） -->
+    <!-- 使用exists检查，如果存在则返回true，否则返回false -->
+    <select id="validateAdmin" resultType="boolean">
+        SELECT EXISTS(
+                       SELECT 1
+                       FROM bank.admin
+                       WHERE username = #{username} AND password = #{password}
+                   )
+    </select>
+</mapper>
