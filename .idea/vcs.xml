@@ -2,5 +2,6 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/代码/代码/zzuli-web-management/zzuli-web-management" vcs="Git" />
   </component>
 </project>

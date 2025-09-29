@@ -2,7 +2,14 @@
 <module type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
-    <content url="file://$MODULE_DIR$" />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/代码/代码/EMALL/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/代码/代码/EMALL/src/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/代码/代码/spring-ai-agent-master/spring-ai-master/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/代码/代码/spring-ai-agent-master/spring-ai-master/src/main/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/代码/代码/zzuli-web-management/zzuli-web-management/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/代码/代码/zzuli-web-management/zzuli-web-management/src/main/resources" type="java-resource" />
+    </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
